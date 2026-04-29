@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحدي 90 يوم لنسخة أقوى وأفضل</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --secondary: #10b981;
+            --secondary-hover: #059669;
+            --destructive: #ef4444;
+            --destructive-hover: #dc2626;
+            --warning: #f59e0b;
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --surface-hover: #f1f5f9;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --border: #e2e8f0;
+            --color-excellent: #8b5cf6;
+            --color-good: #10b981;
+            --color-fair: #f59e0b;
+            --color-poor: #ef4444;
+            --spacing-1: 0.25rem;
+            --spacing-2: 0.5rem;
+            --spacing-3: 0.75rem;
+            --spacing-4: 1rem;
+            --spacing-5: 1.5rem;
+            --spacing-6: 2rem;
+            --spacing-8: 3rem;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+            --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+            --radius-sm: 0.25rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 1rem;
+            --radius-xl: 1.5rem;
+            --radius-full: 9999px;
+            --transition-fast: 0.15s ease-in-out;
+            --transition-normal: 0.3s ease-in-out;
+        }
+        [data-theme="dark"] {
+            --primary: #818cf8;
+            --primary-hover: #6366f1;
+            --secondary: #34d399;
+            --secondary-hover: #10b981;
+            --destructive: #f87171;
+            --destructive-hover: #ef4444;
+            --background: #0f172a;
+            --surface: #1e293b;
+            --surface-hover: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border: #334155;
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Tajawal', sans-serif; }
+        body { background-color: var(--background); color: var(--text-primary); transition: background-color var(--transition-normal), color var(--transition-normal); overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        button { cursor: pointer; border: none; background: none; font-family: inherit; }
+        .app-container { display: flex; height: 100vh; width: 100vw; overflow: hidden; }
+        .sidebar { width: 250px; background-color: var(--surface); border-left: 1px solid var(--border); display: flex; flex-direction: column; padding: var(--spacing-4) 0; transition: var(--transition-normal); z-index: 10; }
+        .logo { display: flex; align-items: center; gap: var(--spacing-3); padding: 0 var(--spacing-5); margin-bottom: var(--spacing-6); font-size: 1.25rem; font-weight: 800; color: var(--primary); }
+        .nav-links { display: flex; flex-direction: column; flex: 1; gap: var(--spacing-2); padding: 0 var(--spacing-4); }
+        .nav-links a { display: flex; align-items: center; gap: var(--spacing-3); padding: var(--spacing-3) var(--spacing-4); border-radius: var(--radius-md); color: var(--text-secondary); font-weight: 500; transition: all var(--transition-fast); }
+        .nav-links a:hover { background-color: var(--surface-hover); color: var(--primary); }
+        .nav-links a.active { background-color: var(--primary); color: white; box-shadow: var(--shadow-sm); }
+        .main-content { flex: 1; overflow-y: auto; padding: var(--spacing-6) var(--spacing-8); position: relative; padding-bottom: 80px; }
+        .page-enter { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .bottom-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; background-color: var(--surface); border-top: 1px solid var(--border); justify-content: space-around; align-items: center; height: 70px; z-index: 20; padding-bottom: env(safe-area-inset-bottom); }
+        .bottom-nav a { display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-secondary); width: 100%; height: 100%; transition: color var(--transition-fast); font-size: 1.5rem; }
+        .bottom-nav a.active { color: var(--primary); position: relative; }
+        .bottom-nav a.active::after { content: ''; position: absolute; top: 0; width: 30px; height: 4px; background-color: var(--primary); border-radius: 0 0 4px 4px; }
+        .card { background-color: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--spacing-5); box-shadow: var(--shadow-sm); transition: transform var(--transition-fast), box-shadow var(--transition-fast); }
+        .card:hover { box-shadow: var(--shadow-md); }
+        .header-title { font-size: 2rem; font-weight: 800; color: var(--text-primary); margin-bottom: var(--spacing-2); }
+        .header-subtitle { color: var(--text-secondary); font-size: 1rem; margin-bottom: var(--spacing-6); }
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--spacing-2); padding: var(--spacing-3) var(--spacing-5); border-radius: var(--radius-md); font-weight: 700; transition: all var(--transition-fast); }
+        .btn-primary { background-color: var(--primary); color: white; }
+        .btn-primary:hover { background-color: var(--primary-hover); transform: translateY(-1px); }
+        .btn-outline { border: 1px solid var(--border); color: var(--text-primary); }
+        .btn-outline:hover { background-color: var(--surface-hover); }
+        .input { width: 100%; padding: var(--spacing-3) var(--spacing-4); border-radius: var(--radius-md); border: 1px solid var(--border); background-color: var(--background); color: var(--text-primary); outline: none; transition: border-color var(--transition-fast); font-family: inherit; }
+        .input:focus { border-color: var(--primary); }
+        .checkbox-container { display: flex; align-items: center; gap: var(--spacing-3); cursor: pointer; font-size: 1.1rem; font-weight: 500; }
+        .checkbox-container input { width: 1.5rem; height: 1.5rem; accent-color: var(--primary); cursor: pointer; }
+        @media (max-width: 768px) { .sidebar { display: none; } .bottom-nav { display: flex; } .main-content { padding: var(--spacing-4); padding-bottom: 90px; } }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <nav class="sidebar">
+            <div class="logo">
+                <i class="fas fa-bolt"></i>
+                <span>تحدي 90 يوم</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#dashboard" data-page="dashboard"><i class="fas fa-home"></i> <span>الرئيسية</span></a></li>
+                <li><a href="#habits" data-page="habits"><i class="fas fa-heart"></i> <span>العادات</span></a></li>
+                <li><a href="#tasks" data-page="tasks"><i class="fas fa-tasks"></i> <span>المهام</span></a></li>
+                <li><a href="#goals" data-page="goals"><i class="fas fa-bullseye"></i> <span>الأهداف</span></a></li>
+                <li><a href="#analytics" data-page="analytics"><i class="fas fa-chart-line"></i> <span>التقييم</span></a></li>
+                <li><a href="#journal" data-page="journal"><i class="fas fa-book-open"></i> <span>اليوميات</span></a></li>
+                <li style="margin-top:auto" class="admin-link-container">
+                    <a href="#admin" data-page="admin" class="secret-admin" title="الإعدادات">
+                        <i class="fas fa-cog"></i> <span>الإعدادات</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <main class="main-content" id="app">
+            <div class="loader">جاري التحميل...</div>
+        </main>
+        <nav class="bottom-nav">
+            <a href="#dashboard" data-page="dashboard"><i class="fas fa-home"></i></a>
+            <a href="#habits" data-page="habits"><i class="fas fa-heart"></i></a>
+            <a href="#tasks" data-page="tasks"><i class="fas fa-tasks"></i></a>
+            <a href="#goals" data-page="goals"><i class="fas fa-bullseye"></i></a>
+            <a href="#analytics" data-page="analytics"><i class="fas fa-chart-line"></i></a>
+        </nav>
+    </div>
+
+    <script>
+        window.AppStore = {
+            data: {},
+            init() {
+                let stored = null;
+                try {
+                    stored = localStorage.getItem('challenge_90_data');
+                } catch(e) {
+                    console.warn("LocalStorage access denied. App will run in volatile memory.");
+                }
+
+                if (stored) {
+                    this.data = JSON.parse(stored);
+                } else {
+                    this.data = {
+                        startDate: new Date().toISOString().split('T')[0],
+                        theme: 'light',
+                        dailyRecords: {},
+                        tasks: {
+                            daily: [
+                                { id: 'dt1', title: 'شرب 3 لتر ماء', active: true },
+                                { id: 'dt2', title: 'ترتيب السرير', active: true }
+                            ],
+                            weekly: [
+                                { id: 'wt1', title: 'مراجعة خطة الأسبوع والتفكير الإيجابي', active: true }
+                            ]
+                        },
+                        goals: [
+                            "الالتزام بالصلاة مع السنن",
+                            "قراءة سورة البقرة يومياً",
+                            "ممارسة الرياضة 4 أيام أسبوعياً",
+                            "تطوير اللغة الإنجليزية لمستوى قوي",
+                            "تعلم كسب المال وتحقيق أول دخل",
+                            "التعلم وخوض تجارب مفيدة"
+                        ]
+                    };
+                    this.save();
+                }
+            },
+            save() { 
+                try {
+                    localStorage.setItem('challenge_90_data', JSON.stringify(this.data));
+                } catch(e) {
+                    // Safe swallow for local cross-origin strict profiles
+                }
+            },
+            getToday() {
+                const date = new Date();
+                const offset = date.getTimezoneOffset() * 60000;
+                return (new Date(date.getTime() - offset)).toISOString().split('T')[0];
+            },
+            getDayNumber() {
+                const start = new Date(this.data.startDate);
+                const today = new Date(this.getToday());
+                start.setHours(0, 0, 0, 0);
+                today.setHours(0, 0, 0, 0);
+                const diffTime = today - start;
+                return Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+            },
+            getRecord(date) {
+                if (!this.data.dailyRecords[date]) {
+                    this.data.dailyRecords[date] = { habits: {}, tasks: {}, journal: '' };
+                }
+                return this.data.dailyRecords[date];
+            },
+            updateRecord(date, section, key, value) {
+                const record = this.getRecord(date);
+                if (!record[section]) record[section] = {};
+                record[section][key] = value;
+                this.data.dailyRecords[date] = record;
+                this.save();
+            },
+            calculatePoints() {
+                let total = 0;
+                Object.keys(this.data.dailyRecords).forEach(date => {
+                    const habits = this.data.dailyRecords[date].habits || {};
+                    if (habits.prayer) {
+                        Object.values(habits.prayer).forEach(val => {
+                            if (val === 'sunnah_first') total += 5;
+                            else if (val === 'sunnah_on_time') total += 4;
+                            else if (val === 'sunnah_late') total += 2;
+                            else if (val === 'no_sunnah_late') total += 1;
+                        });
+                    }
+                    if (habits.quran) total += 10;
+                    if (habits.sport) total += 15;
+                    if (habits.english && habits.english.trim() !== '') total += 5;
+                    if (habits.learning && habits.learning.trim() !== '') total += 5;
+                });
+                return total;
+            },
+            calculateStreak() {
+                const sortedDates = Object.keys(this.data.dailyRecords).sort((a, b) => new Date(b) - new Date(a));
+                let streak = 0;
+                let checkDate = new Date(this.getToday());
+                for (let i = 0; i < sortedDates.length; i++) {
+                    const dateStr = sortedDates[i];
+                    const record = this.data.dailyRecords[dateStr];
+                    let hasData = (Object.keys(record.habits).length > 0 || Object.keys(record.tasks).length > 0);
+                    if (hasData) {
+                        const cStr = checkDate.toISOString().split('T')[0];
+                        if (dateStr === cStr) {
+                            streak++;
+                            checkDate.setDate(checkDate.getDate() - 1);
+                            continue;
+                        }
+                    }
+                    break;
+                }
+                return streak;
+            }
+        };
+
+        window.AppPages = window.AppPages || {};
+
+        window.AppPages.dashboard = {
+            render: function (container) {
+                const today = window.AppStore.getToday();
+                const dayNumber = window.AppStore.getDayNumber();
+                const totalPoints = window.AppStore.calculatePoints();
+                const streak = window.AppStore.calculateStreak();
+                container.innerHTML = `
+            <div class="dashboard-page">
+                <h2 class="header-title">مرحباً بك، اليوم هو اليوم ${dayNumber} 🔥</h2>
+                <p class="header-subtitle">التاريخ: ${today}</p>
+                <div class="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--spacing-4); margin-bottom: var(--spacing-6);">
+                    <div class="card" style="text-align: center;"><h3>🔥 الاستمرارية</h3><p style="font-size: 2rem; font-weight: bold; color: var(--warning);">${streak}</p><small>أيام متتالية</small></div>
+                    <div class="card" style="text-align: center;"><h3>⭐ النقاط الكلية</h3><p style="font-size: 2rem; font-weight: bold; color: var(--primary);">${totalPoints}</p></div>
+                    <div class="card" style="text-align: center;"><h3>📈 الإنجاز</h3><p style="font-size: 2rem; font-weight: bold; color: var(--secondary);">${Math.round((dayNumber / 90) * 100)}%</p></div>
+                </div>
+                <div class="card" style="margin-bottom: var(--spacing-4);">
+                    <h3>اقتباس اليوم 💡</h3><p style="margin-top: 10px; font-size: 1.1rem; color: var(--text-secondary); font-style: italic;">"النجاح هو محصلة مجهودات صغيرة تتكرر يومياً."</p>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <a href="#habits" class="btn btn-primary"><i class="fas fa-check-circle"></i> إدخال بيانات اليوم</a>
+                    <a href="#tasks" class="btn btn-outline"><i class="fas fa-tasks"></i> عرض المهام</a>
+                </div>
+            </div>
+        `;
+            }
+        };
+
+        window.AppPages.habits = {
+            render: function (container) {
+                const today = window.AppStore.getToday();
+                const record = window.AppStore.getRecord(today);
+                const habits = record.habits || {};
+                const prayer = habits.prayer || {};
+                const sportDays = [1, 3, 5, 6];
+                const isSportDay = sportDays.includes(new Date().getDay());
+
+                container.innerHTML = `
+            <div class="habits-page">
+                <h2 class="header-title">العادات اليومية 🤍</h2>
+                <p class="header-subtitle">استمر، أنت تبني نسخة أفضل!</p>
+                <div class="card" style="margin-bottom: var(--spacing-4);">
+                    <h3 style="margin-bottom: 10px;">🕌 الصلاة</h3>
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        ${this.renderPrayerSelect('fajr', 'الفجر', prayer.fajr)}
+                        ${this.renderPrayerSelect('dhuhr', 'الظهر', prayer.dhuhr)}
+                        ${this.renderPrayerSelect('asr', 'العصر', prayer.asr)}
+                        ${this.renderPrayerSelect('maghrib', 'المغرب', prayer.maghrib)}
+                        ${this.renderPrayerSelect('isha', 'العشاء', prayer.isha)}
+                    </div>
+                </div>
+                <div class="card" style="margin-bottom: var(--spacing-4);">
+                    <label class="checkbox-container"><input type="checkbox" id="habit-quran" ${habits.quran ? 'checked' : ''}> 📖 قراءة سورة البقرة</label>
+                </div>
+                ${isSportDay ? `
+                <div class="card" style="margin-bottom: var(--spacing-4);">
+                    <label class="checkbox-container"><input type="checkbox" id="habit-sport" ${habits.sport ? 'checked' : ''}> 🏃‍♀️ الرياضة (مطلوبة اليوم)</label>
+                </div>
+                ` : `
+                <div class="card" style="margin-bottom: var(--spacing-4); opacity: 0.6;"><p>🏃‍♀️ الرياضة (يوم راحة اليوم المجدول)</p></div>
+                `}
+                <div class="card" style="margin-bottom: var(--spacing-4);"><h3 style="margin-bottom: 10px;">🌍 تطوير اللغة الإنجليزية</h3><input type="text" id="habit-english" class="input" placeholder="ما الخطوة التي أخذتها اليوم؟" value="${habits.english || ''}"></div>
+                <div class="card" style="margin-bottom: var(--spacing-4);"><h3 style="margin-bottom: 10px;">🧠 تعلم شيء جديد</h3><input type="text" id="habit-learning" class="input" placeholder="ماذا تعلمت اليوم؟" value="${habits.learning || ''}"></div>
+                <button class="btn btn-primary" id="save-habits-btn" style="width: 100%; padding: 15px;">حفظ التغييرات</button>
+                <p id="save-msg" style="text-align:center; color: var(--secondary); margin-top: 10px; display: none;">✅ تم الحفظ بنجاح!</p>
+            </div>
+        `;
+
+                container.querySelector('#save-habits-btn').addEventListener('click', () => {
+                    const prayerObj = {
+                        fajr: document.getElementById('prayer-fajr').value,
+                        dhuhr: document.getElementById('prayer-dhuhr').value,
+                        asr: document.getElementById('prayer-asr').value,
+                        maghrib: document.getElementById('prayer-maghrib').value,
+                        isha: document.getElementById('prayer-isha').value,
+                    };
+                    window.AppStore.updateRecord(today, 'habits', 'prayer', prayerObj);
+                    window.AppStore.updateRecord(today, 'habits', 'quran', document.getElementById('habit-quran').checked);
+                    window.AppStore.updateRecord(today, 'habits', 'sport', document.getElementById('habit-sport') ? document.getElementById('habit-sport').checked : false);
+                    window.AppStore.updateRecord(today, 'habits', 'english', document.getElementById('habit-english').value);
+                    window.AppStore.updateRecord(today, 'habits', 'learning', document.getElementById('habit-learning').value);
+                    const msg = document.getElementById('save-msg'); msg.style.display = 'block'; setTimeout(() => msg.style.display = 'none', 3000);
+                });
+            },
+            renderPrayerSelect: function (id, label, value) {
+                return `<div><label>${label}:</label><select class="input" id="prayer-${id}"><option value="none" ${!value || value === 'none' ? 'selected' : ''}>-- لم يتم بعد --</option><option value="sunnah_first" ${value === 'sunnah_first' ? 'selected' : ''}>مع السنة وفي أول نصف ساعة 💛</option><option value="sunnah_on_time" ${value === 'sunnah_on_time' ? 'selected' : ''}>مع السنة وفي الوقت 💜</option><option value="sunnah_late" ${value === 'sunnah_late' ? 'selected' : ''}>مع السنة خارج الوقت 🤍</option><option value="no_sunnah_late" ${value === 'no_sunnah_late' ? 'selected' : ''}>دون السنة خارج الوقت 🖤</option></select></div>`;
+            }
+        };
+
+        window.AppPages.tasks = {
+            render: function (container) {
+                const today = window.AppStore.getToday();
+                const tasksRecord = window.AppStore.getRecord(today).tasks || {};
+                const storeTasks = window.AppStore.data.tasks || { daily: [], weekly: [] };
+                let dailyHtml = storeTasks.daily.map(t => `<div style="padding: 10px; border-bottom: 1px solid var(--border);"><label class="checkbox-container"><input type="checkbox" class="task-checkbox" data-id="${t.id}" ${tasksRecord[t.id] ? 'checked' : ''}> <span style="${tasksRecord[t.id] ? 'text-decoration: line-through; color: var(--text-muted);' : ''}">${t.title}</span></label></div>`).join('') || '<p>لا توجد مهام يومية.</p>';
+                let weeklyHtml = storeTasks.weekly.map(t => `<div style="padding: 10px; border-bottom: 1px solid var(--border);"><label class="checkbox-container"><input type="checkbox" class="task-checkbox" data-id="${t.id}" ${tasksRecord[t.id] ? 'checked' : ''}> <span style="${tasksRecord[t.id] ? 'text-decoration: line-through; color: var(--text-muted);' : ''}">${t.title}</span></label></div>`).join('') || '<p>لا توجد مهام أسبوعية.</p>';
+                container.innerHTML = `<div class="tasks-page"><h2 class="header-title">المهام 📋</h2><p class="header-subtitle">قوائم المهام اليومية والأسبوعية</p><div class="card" style="margin-bottom: var(--spacing-4);"><h3 style="margin-bottom: 10px; color: var(--primary);">مهام اليوم</h3>${dailyHtml}</div><div class="card"><h3 style="margin-bottom: 10px; color: var(--secondary);">مهام الأسبوع</h3>${weeklyHtml}</div></div>`;
+                container.querySelectorAll('.task-checkbox').forEach(cb => {
+                    cb.addEventListener('change', (e) => {
+                        const isChecked = e.target.checked;
+                        window.AppStore.updateRecord(today, 'tasks', e.target.getAttribute('data-id'), isChecked);
+                        const span = e.target.nextElementSibling;
+                        span.style.textDecoration = isChecked ? 'line-through' : 'none';
+                        span.style.color = isChecked ? 'var(--text-muted)' : 'inherit';
+                    });
+                });
+            }
+        };
+
+        window.AppPages.goals = {
+            render: function (container) {
+                const goalsHtml = window.AppStore.data.goals.map((g, idx) => `<div class="card" style="margin-bottom: var(--spacing-3); display: flex; align-items: center; gap: 15px;"><div style="background: var(--primary); color: white; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: bold;">${idx + 1}</div><p style="font-size: 1.1rem; font-weight: 500;">${g}</p></div>`).join('');
+                container.innerHTML = `<div class="goals-page"><h2 class="header-title">الأهداف 🎯</h2><p class="header-subtitle">لنبقى مركزين على الأهداف الكبرى للتحدي.</p><div class="goals-list">${goalsHtml}</div></div>`;
+            }
+        };
+
+        window.AppPages.analytics = {
+            render: function (container) {
+                const dayNumber = window.AppStore.getDayNumber();
+                const progressPercentage = Math.round((dayNumber / 90) * 100) || 0;
+                container.innerHTML = `<div class="analytics-page"><h2 class="header-title">التقييم الشامل 📊</h2><p class="header-subtitle">تتبع مستوى تطورك واقترابك من النسخة الأفضل!</p><div class="card" style="margin-bottom: var(--spacing-4);"><h3>التقدم العام (الرحلة)</h3><div style="background: var(--surface-hover); border-radius: var(--radius-full); height: 20px; overflow: hidden; margin-top: 15px; margin-bottom: 10px;"><div style="background: var(--primary); height: 100%; width: ${progressPercentage}%; transition: width 1s;"></div></div><div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--text-secondary);"><span>اليوم ${dayNumber}</span><span>متبقي ${90 - dayNumber > 0 ? 90 - dayNumber : 0} يوماً</span></div></div><div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-4); margin-bottom: var(--spacing-4);"><div class="card" style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: var(--spacing-6);"><i class="fas fa-fire" style="font-size: 3rem; color: var(--warning); margin-bottom: 10px;"></i><h4 style="color: var(--text-secondary);">الاستمرارية (Streak)</h4><p style="font-size: 2rem; font-weight: bold; color: var(--text-primary);">${window.AppStore.calculateStreak()} <span style="font-size: 1rem; font-weight: normal; color: var(--text-secondary);">يوم</span></p></div><div class="card" style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: var(--spacing-6);"><i class="fas fa-star" style="font-size: 3rem; color: var(--color-excellent); margin-bottom: 10px;"></i><h4 style="color: var(--text-secondary);">مجموع النقاط</h4><p style="font-size: 2rem; font-weight: bold; color: var(--text-primary);">${window.AppStore.calculatePoints()} <span style="font-size: 1rem; font-weight: normal; color: var(--text-secondary);">نقطة</span></p></div></div></div>`;
+            }
+        };
+
+        window.AppPages.journal = {
+            render: function (container) {
+                const today = window.AppStore.getToday();
+                container.innerHTML = `<div class="journal-page"><h2 class="header-title">اليوميات 📓</h2><p class="header-subtitle">ماذا تعلمت أو شعرت اليوم؟</p><div class="card"><label style="display: block; font-weight: bold; margin-bottom: 10px; color: var(--primary);">يوميات اليوم (${today})</label><textarea id="journal-input" class="input" rows="10" placeholder="كان اليوم رائعاً لأنني..." style="resize: vertical;">${window.AppStore.getRecord(today).journal || ''}</textarea><button id="save-journal-btn" class="btn btn-primary" style="margin-top: 15px; width: 100%;">حفظ المذكرة</button><p id="journal-msg" style="text-align:center; color: var(--secondary); margin-top: 10px; display: none;">تم الحفظ!</p></div></div>`;
+                container.querySelector('#save-journal-btn').addEventListener('click', () => {
+                    const r = window.AppStore.getRecord(today);
+                    r.journal = container.querySelector('#journal-input').value;
+                    window.AppStore.data.dailyRecords[today] = r;
+                    window.AppStore.save();
+                    const msg = container.querySelector('#journal-msg'); msg.style.display = 'block'; setTimeout(() => msg.style.display = 'none', 3000);
+                });
+            }
+        };
+
+        window.AppPages.admin = {
+            render: function (container) {
+                container.innerHTML = `<div class="admin-page" style="padding-bottom: 20px;"><h2 class="header-title">الإعدادات ⚙️</h2><p class="header-subtitle">إدارة التطبيق بالكامل بدون قيود حماية.</p><div class="card" style="margin-bottom: var(--spacing-4);"><h3 style="margin-bottom: 15px;">المهام الديناميكية</h3><div style="display: flex; gap: 10px; margin-bottom: 15px;"><input type="text" id="new-task-title" class="input" placeholder="اسم المهمة الجديدة"><select id="new-task-type" class="input" style="width: 120px;"><option value="daily">يومية</option><option value="weekly">أسبوعية</option></select><button id="add-task-btn" class="btn btn-secondary">إضافة</button></div><ul id="admin-tasks-list" style="max-height: 200px; overflow-y: auto;"></ul></div><div class="card" style="margin-bottom: var(--spacing-4);"><h3 style="margin-bottom: 15px;">تبديل المظهر</h3><button id="toggle-theme-btn" class="btn btn-outline" style="width: 100%;"><i class="fas fa-moon"></i> التبديل بين المظلم والفاتح</button></div><div class="card" style="margin-bottom: var(--spacing-4);"><h3 style="margin-bottom: 15px;">تصدير البيانات</h3><button id="export-btn" class="btn btn-primary" style="width: 100%;"><i class="fas fa-download"></i> تصدير (JSON)</button></div><div class="card" style="border-color: var(--destructive); background-color: rgba(239, 68, 68, 0.05);"><h3 style="color: var(--destructive); margin-bottom: 15px;">منطقة الخطر</h3><button id="reset-btn" class="btn btn-outline" style="width: 100%; color: var(--destructive); border-color: var(--destructive);"><i class="fas fa-trash"></i> تصفير التطبيق (البدء من جديد)</button></div></div>`;
+                this.renderAdminTasksList(container);
+                container.querySelector('#add-task-btn').addEventListener('click', () => {
+                    const title = container.querySelector('#new-task-title').value;
+                    const type = container.querySelector('#new-task-type').value;
+                    if (!title.trim()) return;
+                    window.AppStore.data.tasks[type].push({ id: type.charAt(0) + Date.now(), title, active: true });
+                    window.AppStore.save();
+                    container.querySelector('#new-task-title').value = '';
+                    this.renderAdminTasksList(container);
+                });
+                container.querySelector('#toggle-theme-btn').addEventListener('click', () => {
+                    const isDark = document.body.getAttribute('data-theme') === 'dark';
+                    document.body.setAttribute('data-theme', isDark ? '' : 'dark');
+                    if (isDark) document.body.removeAttribute('data-theme');
+                    window.AppStore.data.theme = isDark ? 'light' : 'dark';
+                    window.AppStore.save();
+                });
+                container.querySelector('#export-btn').addEventListener('click', () => {
+                    const blob = new Blob([JSON.stringify(window.AppStore.data, null, 2)], { type: 'application/json' });
+                    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `Challenge90_Backup_${window.AppStore.getToday()}.json`; a.click();
+                });
+                container.querySelector('#reset-btn').addEventListener('click', () => {
+                    if (confirm('تحذير: هذا سيؤدي إلى مسح كل البيانات! هل أنت متأكد؟')) {
+                        try { localStorage.removeItem('challenge_90_data'); } catch(e) {} 
+                        location.reload(); 
+                    }
+                });
+            },
+            renderAdminTasksList: function (container) {
+                const listDiv = container.querySelector('#admin-tasks-list');
+                listDiv.innerHTML = '';
+                ['daily', 'weekly'].forEach(type => {
+                    (window.AppStore.data.tasks[type] || []).forEach(t => {
+                        const li = document.createElement('li');
+                        li.style = 'display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border)';
+                        li.innerHTML = `<span>${t.title} <small style="color:var(--primary);">(${type === 'daily' ? 'يومية' : 'أسبوعية'})</small></span><button class="btn btn-outline del-task-btn" data-id="${t.id}" data-type="${type}" style="padding: 5px 10px; color: var(--destructive); border-color: var(--destructive);">حذف</button>`;
+                        listDiv.appendChild(li);
+                    });
+                });
+                listDiv.querySelectorAll('.del-task-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const id = e.target.getAttribute('data-id'), type = e.target.getAttribute('data-type');
+                        window.AppStore.data.tasks[type] = window.AppStore.data.tasks[type].filter(x => x.id !== id);
+                        window.AppStore.save(); this.renderAdminTasksList(container);
+                    });
+                });
+            }
+        };
+
+        window.AppRouter = {
+            init() {
+                window.addEventListener('hashchange', () => this.handleRoute());
+                if (!location.hash) location.hash = '#dashboard'; else this.handleRoute();
+            },
+            handleRoute() {
+                let hash = location.hash.replace('#', '') || 'dashboard';
+                const validPages = ['dashboard', 'habits', 'tasks', 'goals', 'analytics', 'journal', 'admin'];
+                if (!validPages.includes(hash)) hash = 'dashboard';
+                document.querySelectorAll('.sidebar a, .bottom-nav a').forEach(a => {
+                    a.classList.remove('active');
+                    if (a.getAttribute('data-page') === hash) a.classList.add('active');
+                });
+                const appDiv = document.getElementById('app');
+                appDiv.innerHTML = '<div class="page-enter"></div>';
+                const container = appDiv.querySelector('.page-enter');
+                if (window.AppPages[hash]) window.AppPages[hash].render(container);
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            window.AppStore.init();
+            if (window.AppStore.data.theme === 'dark') document.body.setAttribute('data-theme', 'dark');
+            window.AppRouter.init();
+        });
+    </script>
+</body>
+</html>
